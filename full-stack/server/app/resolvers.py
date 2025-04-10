@@ -83,10 +83,11 @@ class LoanItemType(graphene.ObjectType):
     interest_rate = graphene.Float()
     principal = graphene.Float()
     due_date = graphene.String()
+    months = graphene.Float()
 
 # Query class with proper type annotations
 class Query(graphene.ObjectType):
-    existing_loans_with_payments = graphene.List(ExistingLoansWithPayments)
+    # existing_loans_with_payments = graphene.List(ExistingLoansWithPayments)
     loans = graphene.List(LoanItemType)
     loan_payments = graphene.List(LoanPaymentType)
     
@@ -107,19 +108,19 @@ class Query(graphene.ObjectType):
         try:
             loans = ModelRepository.fetch_all(Loans)
             if not loans:
-                print("No loans found.")
+                print("No loans found.") 
             return [LoanItemType(**loan) for loan in loans]
         except Exception as e:
             # raise graphene.GraphQLError(f"Error fetching loans: {str(e)}")
             print(f"Error fetching loans payments: {str(e)}")
 
 
-    def resolve_existing_loans_with_payments(self, info) -> List[ExistingLoansWithPayments]:
-        """Resolve loans and their repayments"""
-        try:
-            loans = ModelRepository.fetch_all(Loans)
-            if not loans:
-                print("No exisiting loans found.")
-            return [ExistingLoansWithPayments(**loan) for loan in loans]
-        except Exception as e:
-            print(f"Error fetching loans and their payments: {str(e)}")
+    # def resolve_existing_loans_with_payments(self, info) -> List[ExistingLoansWithPayments]:
+    #     """Resolve loans and their repayments"""
+    #     try:
+    #         loans = ModelRepository.fetch_all(Loans)
+    #         if not loans:
+    #             print("No exisiting loans found.")
+    #         return [ExistingLoansWithPayments(**loan) for loan in loans]
+    #     except Exception as e:
+    #         print(f"Error fetching loans and their payments: {str(e)}")

@@ -6,6 +6,7 @@ class Loans(db.Model):
     interest_rate = db.Column(db.Float, nullable=False)
     principal = db.Column(db.Float, nullable=False)
     due_date = db.Column(db.Date, nullable=False)
+    months = db.Column(db.Float, nullable=False)
 
     payments = db.relationship("LoanPayments", backref="loans", lazy=True)
 

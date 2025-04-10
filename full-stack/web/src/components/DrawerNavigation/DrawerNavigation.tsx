@@ -11,11 +11,11 @@ const DrawerNavigation: React.FC = () => {
         <Typography variant="h6">NUMIDA DASHBOARD</Typography>
         <List>
                     {[
-            { text: "Loan Payments", path: "/loan_payments" },
+            { text: "Loan Payments", path: "/loan_payments",icon:<PaymentIcon/> },
             { text: "Add Payment", path: "/add_payments", icon:<PaymentIcon/> },
           ].map(({ text, path,icon }) => (
             <ListItem  key={text} onClick={() => navigate(path)}>
-             {icon} <ListItemText primary={text} />
+             {icon}  <ListItemText primary={text} />
             </ListItem>
           ))}
         </List>

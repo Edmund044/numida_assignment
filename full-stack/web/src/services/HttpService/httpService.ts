@@ -1,5 +1,5 @@
 // src/services/LoanPaymentService.ts
-import { API_BASE_URL } from "../config";
+import { API_BASE_URL } from "../../config";
 
 export default class HttpService {
   static async post(endpoint: string, data: any) {

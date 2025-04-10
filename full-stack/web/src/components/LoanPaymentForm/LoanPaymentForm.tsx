@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextField,Typography , Button, CircularProgress, Grid, Box,CardContent, Card } from "@mui/material";
-import HttpService from "../../services/httpService";
+import HttpService from "../../services/HttpService/httpService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -9,7 +9,6 @@ const LoanPaymentForm: React.FC = () => {
   const [loanId, setLoanId] = useState<Number | string>("");
   const [amount, setAmount] = useState<Number | string>("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<String>("");
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
