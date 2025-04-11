@@ -5,6 +5,7 @@ interface Loan {
     principal: number;
     interestRate: number;
     dueDate: string;
+    months: number;
   }
   
   interface Payment {
@@ -21,6 +22,7 @@ interface Loan {
     dueDate: string;
     status: string;
     paymentDate: string;
+    months: number;
   }
   
   class LoanAggregator {
@@ -30,18 +32,14 @@ interface Loan {
     ) {}
   
     // Function to calculate the status based on the sum of payments and due date
-    private calculateStatus(dueDate: string, totalPayments: number, loanAmount: number): string {
-      if (totalPayments >= loanAmount) {
-        return "Paid"; // Loan is fully paid
-      }
+    private calculateStatus(dueDate: string, totalPayments: number, loanAmount: number,lastPaymentDate: string): string {
   
       const due = new Date(dueDate);
-      const today = new Date();
-      const daysLate = (today.getTime() - due.getTime()) / (1000 * 60 * 60 * 24);
-      
-      if (daysLate >= 5) return "On Time";
-      if (daysLate >= -30 && daysLate <= -6) return "Late";
-      if (daysLate < -30 ) return "Defaulted";
+      const latest_payment = new Date(lastPaymentDate);
+      const daysLate = (latest_payment.getTime() - due.getTime()) / (1000 * 60 * 60 * 24);
+      if (daysLate <= 5 && totalPayments >= loanAmount) return "On Time";
+      if (daysLate >= 6 && daysLate <= 30 && totalPayments >= loanAmount ) return "Late";
+      if (daysLate > 30 && totalPayments >= loanAmount) return "Defaulted";
       return "Unpaid";
     }
   
@@ -61,16 +59,19 @@ interface Loan {
   
         const loanAmount =
           primaryItem.principal + (primaryItem.principal * primaryItem.interestRate) / 100; // Total loan amount including interest
-  
-        // Calculate status based on total payments
-        const status = this.calculateStatus(primaryItem.dueDate, totalPayments, loanAmount);
-  
+        
+          
         // Get the last payment date if payments exist
         const lastPaymentDate =
           paymentsForLoan.length > 0
             ? paymentsForLoan
                 .sort((a, b) => b.loanId - a.loanId || new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime())[0].paymentDate
             : "No payments made.";
+
+        console.log(paymentsForLoan)
+        // Calculate status based on total payments
+        const status = this.calculateStatus(primaryItem.dueDate, totalPayments, loanAmount,lastPaymentDate);
+  
         return {
           id: primaryItem.id,
           name: primaryItem.name,
@@ -78,7 +79,8 @@ interface Loan {
           principal: primaryItem.principal,
           dueDate: primaryItem.dueDate,
           status: status,
-          paymentDate: lastPaymentDate, // Last payment date
+          months: primaryItem.months,
+          paymentDate: lastPaymentDate,
         };
       });
     }

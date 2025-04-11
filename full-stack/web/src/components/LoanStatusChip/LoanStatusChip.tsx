@@ -13,7 +13,6 @@ const LoanStatusChip: React.FC<LoanStatusProps> = ({ status }) => {
       "Defaulted": "error",
       "Unpaid": "default",
     };
-    console.log(status)
     return statusColors[status];
   }, [status]);
 

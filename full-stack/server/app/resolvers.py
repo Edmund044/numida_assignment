@@ -11,8 +11,8 @@ class ExistingLoansWithPayments(graphene.ObjectType):
     interest_rate = graphene.Float()
     principal = graphene.Float()
     due_date = graphene.String()
-    status = graphene.String()
     payment_dates = graphene.String()
+    months = graphene.Float()
 
     def resolve_status(self, info) -> str:
         """Resolve the payment status based on the payment date and due date"""
@@ -30,9 +30,9 @@ class ExistingLoansWithPayments(graphene.ObjectType):
                     if payment_date is None:
                         return "Unpaid"
 
-                    # Ensure that due_date and payment_date are valid date objects
-                    if not isinstance(due_date, date):
-                        raise ValueError("Invalid due date format.")
+                    # # Ensure that due_date and payment_date are valid date objects
+                    # if not isinstance(due_date, date):
+                    #     raise ValueError("Invalid due date format.")
 
                     payment_diff = (payment_date - due_date).days
 
@@ -87,7 +87,7 @@ class LoanItemType(graphene.ObjectType):
 
 # Query class with proper type annotations
 class Query(graphene.ObjectType):
-    # existing_loans_with_payments = graphene.List(ExistingLoansWithPayments)
+    existing_loans_with_payments = graphene.List(ExistingLoansWithPayments)
     loans = graphene.List(LoanItemType)
     loan_payments = graphene.List(LoanPaymentType)
     
@@ -115,12 +115,12 @@ class Query(graphene.ObjectType):
             print(f"Error fetching loans payments: {str(e)}")
 
 
-    # def resolve_existing_loans_with_payments(self, info) -> List[ExistingLoansWithPayments]:
-    #     """Resolve loans and their repayments"""
-    #     try:
-    #         loans = ModelRepository.fetch_all(Loans)
-    #         if not loans:
-    #             print("No exisiting loans found.")
-    #         return [ExistingLoansWithPayments(**loan) for loan in loans]
-    #     except Exception as e:
-    #         print(f"Error fetching loans and their payments: {str(e)}")
+    def resolve_existing_loans_with_payments(self, info) -> List[ExistingLoansWithPayments]:
+        """Resolve loans and their repayments"""
+        try:
+            loans = ModelRepository.fetch_all(Loans)
+            if not loans:
+                print("No exisiting loans found.")
+            return [ExistingLoansWithPayments(**loan) for loan in loans]
+        except Exception as e:
+            print(f"Error fetching loans and their payments: {str(e)}")

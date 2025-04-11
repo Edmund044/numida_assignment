@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-
+import { Box } from "@mui/material";
 
 interface LoanInterestProps {
     principal: number;
@@ -13,12 +13,14 @@ export const LoanCalculator: React.FC<LoanInterestProps>  = ({ principal, months
     const [interest, setInterest] = useState(0)
 
     useEffect(() => {
-        setInterest((principal * rate ) / 100)
+        setInterest((principal * rate * months) / 100)
     }, [])
 
     return (
         <div>
-            <h3> {(principal * rate ) / 100}</h3>
+            <Box display="flex" justifyContent="center" alignItems="center">
+                <p> {interest}</p>
+            </Box>
         </div>
     )
 }

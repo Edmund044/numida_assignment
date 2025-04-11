@@ -1,4 +1,4 @@
-import React,{ Suspense } from "react";
+import React,{ Suspense ,useEffect, useState } from "react";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { gql } from "@apollo/client";
@@ -21,41 +21,41 @@ const columns: GridColDef[] = [
       width: 130,
     },
     {
+      field: "Loan Interest",
+      headerName: "Loan Interest",
+      renderCell: (params) => (
+        <LoanCalculator
+          principal={params.row.principal}
+          months={params.row.months}
+          rate={params.row.interestRate}
+        />
+      ),
+    }, 
+    {
         field: 'dueDate',
         headerName: 'Due Date',
         type: 'number',
         width: 130,
       },
       {
-        field: 'status',
-        headerName: 'Status',
-        renderCell: (params) => (
-          <LoanStatusChip
-            status={params.row.status}
-          />
-        ),
-      },
-      {
           field: 'paymentDate',
           headerName: 'Payment Dates',
           type: 'number',
           width: 130,
-        },
+        }, 
         {
-          field: "Loan Interest",
-          headerName: "Loan Interest",
+          field: 'status',
+          headerName: 'Status',
           renderCell: (params) => (
-            <LoanCalculator
-              principal={params.row.principal}
-              months={params.row.months}
-              rate={params.row.interestRate}
+            <LoanStatusChip
+              status={params.row.status}
             />
           ),
-        },  
+        },
   ];
 
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 10 };
 
   const GET_LOANS = gql`
   query GetLoans {
@@ -65,11 +65,13 @@ const columns: GridColDef[] = [
             interestRate
             principal
             dueDate
+            months
         }
         loanPayments {
             id
             loanId
             paymentDate 
+            amount
         }
   }
 `;
@@ -78,8 +80,14 @@ const columns: GridColDef[] = [
 
 const LoanTable: React.FC = () => {
     const data = GraphQLService.fetchData<{ loans: any[] }>(GET_LOANS);
-    const generator = new LoanAggregator(data.loans, data.loanPayments);
-    const result = generator.generateLoanReport();
+    const [result, setResult] = useState<any[]>([]);
+    useEffect(() => {
+      if (data) {
+          const generator = new LoanAggregator(data.loans, data.loanPayments);
+          setResult(generator.generateLoanReport());
+      }
+  }, []);
+
 
     return(
       <ErrorBoundary>
