@@ -7,6 +7,7 @@ import Spinner from "../Spinner/Spinner";
 import GraphQLService from "../../services/GraphqlService/graphqlService";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import LoanAggregator from "../../services/LoanAggregateService/loanAggregateService";
+import LoanStatusChip from "../LoanStatusChip/LoanStatusChip";
 
 
 const columns: GridColDef[] = [
@@ -28,8 +29,11 @@ const columns: GridColDef[] = [
       {
         field: 'status',
         headerName: 'Status',
-        type: 'number',
-        width: 130,
+        renderCell: (params) => (
+          <LoanStatusChip
+            status={params.row.status}
+          />
+        ),
       },
       {
           field: 'paymentDate',

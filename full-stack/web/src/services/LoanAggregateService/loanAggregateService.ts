@@ -8,8 +8,8 @@ interface Loan {
   }
   
   interface Payment {
-    loan_id: number;
-    payment_date: string;
+    loanId: number;
+    paymentDate: string;
     amount: number;
   }
   
@@ -50,7 +50,7 @@ interface Loan {
       return this.primaryArray.map((primaryItem) => {
         // Find all payments for the current loan
         const paymentsForLoan = this.foreignArray.filter(
-          (foreignItem) => foreignItem.loan_id === primaryItem.id
+          (foreignItem) => foreignItem.loanId === primaryItem.id
         );
   
         // Calculate total payments made
@@ -69,10 +69,8 @@ interface Loan {
         const lastPaymentDate =
           paymentsForLoan.length > 0
             ? paymentsForLoan
-                .sort((a, b) => new Date(b.payment_date).getTime() - new Date(a.payment_date).getTime())[0]
-                .payment_date
+                .sort((a, b) => b.loanId - a.loanId || new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime())[0].paymentDate
             : "No payments made.";
-  
         return {
           id: primaryItem.id,
           name: primaryItem.name,
