@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode,Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import './index.css'
@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 import ErrorBoundary from "../src/components/ErrorBoundary/ErrorBoundary.tsx";
+import Spinner from "../src/components/Spinner/Spinner.tsx";
 
 const client = new ApolloClient({
   uri: "http://localhost:2024/graphql",
@@ -15,14 +16,17 @@ const client = new ApolloClient({
 
 createRoot(document.getElementById('root')!).render(
   <ErrorBoundary>
-    <StrictMode>
-      <ApolloProvider client={client}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Dashboard/>
-        </ThemeProvider> 
-      </ApolloProvider>
-    </StrictMode>
+    <Suspense fallback={<Spinner/>}>
+      <StrictMode>
+        <ApolloProvider client={client}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Dashboard/>
+          </ThemeProvider> 
+        </ApolloProvider>
+      </StrictMode>  
+    </Suspense>
+
   </ErrorBoundary>
 
 )

@@ -90,20 +90,22 @@ const LoanTable: React.FC = () => {
 
 
     return(
+      <>
       <ErrorBoundary>
-        <Suspense fallback={<Spinner/>}>
-          <Paper sx={{ width: '1000px' }}>
-          <DataGrid
-            rows={result}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[2, 5, 10]}
-            checkboxSelection
-            sx={{ border: 0 }}
-          />
-        </Paper>
-        </Suspense>
+            <Suspense fallback={<Spinner/>}>
+              <Paper sx={{ width: '1000px' }}>
+              <DataGrid
+                rows={result}
+                columns={columns}
+                initialState={{ pagination: { paginationModel } }}
+                pageSizeOptions={[2, 5, 10]}
+                checkboxSelection
+                sx={{ border: 0 }}
+              />
+            </Paper>
+            </Suspense>
       </ErrorBoundary>
+      </>
 
     );
 

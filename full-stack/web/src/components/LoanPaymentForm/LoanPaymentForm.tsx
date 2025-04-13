@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { TextField,Typography , Button, CircularProgress, Grid, Box,CardContent, Card } from "@mui/material";
 import HttpService from "../../services/HttpService/httpService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 
 const LoanPaymentForm: React.FC = () => {
@@ -63,7 +64,9 @@ const LoanPaymentForm: React.FC = () => {
 
   return (
     <>
-        <Grid container justifyContent="center" style={{ width: '1000px', padding: 20 }}>
+          <ErrorBoundary>
+          <Suspense fallback={<Spinner/>}>
+          <Grid container justifyContent="center" style={{ width: '1000px', padding: 20 }}>
       <Grid size={12}>
   
           <Card>
@@ -106,6 +109,9 @@ const LoanPaymentForm: React.FC = () => {
 
       </Grid>
     </Grid>
+          </Suspense>
+          </ErrorBoundary>
+
     </>
   );
 };
