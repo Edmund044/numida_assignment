@@ -24,7 +24,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   render() {
     if (this.state.hasError) {
-      return <div style={{ color: "red", textAlign: "center", marginTop: "20px" }}>⚠️ Failed to load data. Please try again later.</div>;
+      return <div style={{ color: "red",display:"flex",alignItems: "center", textAlign: "center",marginLeft:"500px", marginTop: "20px" }}>⚠️ Failed to load data. Please try again later.</div>;
     }
     return this.props.children;
   }

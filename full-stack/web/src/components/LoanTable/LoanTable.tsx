@@ -97,7 +97,7 @@ const LoanTable: React.FC = () => {
             rows={result}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[5, 10]}
+            pageSizeOptions={[2, 5, 10]}
             checkboxSelection
             sx={{ border: 0 }}
           />

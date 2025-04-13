@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard/Dashboard.tsx';
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
+import ErrorBoundary from "../src/components/ErrorBoundary/ErrorBoundary.tsx";
 
 const client = new ApolloClient({
   uri: "http://localhost:2024/graphql",
@@ -13,13 +14,15 @@ const client = new ApolloClient({
 });
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Dashboard/>
-      </ThemeProvider> 
-      {/* <App /> */}
-    </ApolloProvider>
-  </StrictMode>
+  <ErrorBoundary>
+    <StrictMode>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Dashboard/>
+        </ThemeProvider> 
+      </ApolloProvider>
+    </StrictMode>
+  </ErrorBoundary>
+
 )

@@ -9,12 +9,36 @@ const LoanPaymentForm: React.FC = () => {
   const [loanId, setLoanId] = useState<Number | string>("");
   const [amount, setAmount] = useState<Number | string>("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{ loanId?: string; amount?: string }>({});
+
+  const validate = () => {
+    const newErrors: { loanId?: string; amount?: string } = {};
+
+    if (!loanId || isNaN(Number(loanId)) || Number(loanId) <= 0) {
+      newErrors.loanId = "Loan ID must be a positive number";
+    }
+
+    if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
+      newErrors.amount = "Amount must be a positive number";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setErrors({});
+
+    if (!validate()) {
+      toast.error("Please enter positive intergers.");
+      return;
+    }
 
     setLoading(true);
-    // Validate input
+
+
     if (!loanId || !amount) {
       alert("Both fields are required!");
       return;
@@ -26,7 +50,7 @@ const LoanPaymentForm: React.FC = () => {
       await HttpService.post("loan_payments", { loan_id: Number(loanId), amount: Number(amount) });
       toast.success("Payment submitted successfully!");
 
-      // Clear form after success
+
       setLoanId("");
       setAmount("");
     } catch (error) {
