@@ -4,6 +4,7 @@ import HttpService from "../../services/HttpService/httpService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import Spinner from "../Spinner/Spinner";
 
 
 const LoanPaymentForm: React.FC = () => {
