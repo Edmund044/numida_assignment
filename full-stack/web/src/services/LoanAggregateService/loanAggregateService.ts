@@ -37,7 +37,7 @@ interface Loan {
       const due = new Date(dueDate);
       const latest_payment = new Date(lastPaymentDate);
       const daysLate = (latest_payment.getTime() - due.getTime()) / (1000 * 60 * 60 * 24);
-      if (daysLate <= 5 && totalPayments >= loanAmount) return "On Time";
+      if (daysLate <= 0 && totalPayments >= loanAmount) return "On Time";
       if (daysLate >= 6 && daysLate <= 30 && totalPayments >= loanAmount ) return "Late";
       if (daysLate > 30 && totalPayments >= loanAmount) return "Defaulted";
       return "Unpaid";
@@ -68,7 +68,6 @@ interface Loan {
                 .sort((a, b) => b.loanId - a.loanId || new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime())[0].paymentDate
             : "No payments made.";
 
-        console.log(paymentsForLoan)
         // Calculate status based on total payments
         const status = this.calculateStatus(primaryItem.dueDate, totalPayments, loanAmount,lastPaymentDate);
   
